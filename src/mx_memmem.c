@@ -1,0 +1,28 @@
+#include "libmx.h"
+
+void *mx_memmem(const void *big, size_t big_len, const void *little, size_t little_len) {
+    if (big_len < little_len)
+        return NULL;
+    char *b = (char*) big;
+    char *l = (char*) little;
+    bool flag;
+    for (size_t i = 0; i < big_len; i++, b++) {
+        flag = true;
+        for (size_t j = 0; j < little_len; j++) {
+            if (*b != *l)
+                flag = false;
+        }
+        if (flag)
+            return b;
+    }
+    return NULL;
+}
+
+/*#include <string.h>
+#include <stdio.h>
+int main() {
+    char *hay = "ArtyPyDev";
+    char *nee = "rt";
+    printf("%s\n", mx_memmem(hay, 9, nee, 2));
+    printf("%s\n", memmem(hay, 9, nee, 2));
+}*/
