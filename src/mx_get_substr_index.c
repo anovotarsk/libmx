@@ -1,16 +1,14 @@
 #include "libmx.h"
 
-int mx_get_substr_index(const char *str, const char *sub) {
-    if (str == NULL || sub == NULL || mx_strlen(sub) == 0)
-        return -2;
-    int len1 = mx_strlen(str), len2 = mx_strlen(sub), n = 0;;
-    char *s = mx_strnew(len1);
-    for (int i = 0; i < len1; i++)
-        s[i] = str[i];
+int loop(int len1, int len2, char *s, const char *sub) {
+    bool flag;
+    int i;
+    int n = 0;
+
     while (len1 > 0) {
-        bool flag = true;
-        for (int j = 0; j < len2 && flag; j++) {
-            if (s[j] != sub[j])
+        flag = true;
+        for (i = 0; i < len2 && flag; i++) {
+            if (s[i] != sub[i])
                 flag = false;
         }
         if (flag)
@@ -22,9 +20,21 @@ int mx_get_substr_index(const char *str, const char *sub) {
     return -1;
 }
 
-/*#include <stdio.h>
-int main() {
+int mx_get_substr_index(const char *str, const char *sub) {
+    int len1 = mx_strlen(str);
+    int len2 = mx_strlen(sub);
+    char *s = mx_strnew(len1);
+    int i;
+
+    if (str == NULL || sub == NULL || mx_strlen(sub) == 0)
+        return -2;
+    for (i = 0; i < len1; i++)
+        s[i] = str[i];
+    return loop(len1, len2, s, sub);
+}
+
+/*int main() {
     char *hay = "ArtyPyDev";
-    char *nee = "Dev";
-    printf("%d", mx_get_substr_index(hay, nee));
+    // char *nee = "Dev";
+    printf("%d", mx_get_substr_index(hay, NULL));
 }*/

@@ -1,27 +1,48 @@
 #include "libmx.h"
 
+static char **strsplit_dop(const char *s, char c, int count, char **arr);
+
+static bool count_border(char *s, char c, char **start, char **end);
+
 char **mx_strsplit(const char *s, char c) {
-    if (s == NULL)
+    char **arr = NULL;
+    int count = 0;
+
+    if (!s)
         return NULL;
-    int len = mx_strlen(s), count_words = mx_count_words(s, c);
-    int count = 0, buf = 0;
-    char **rez = malloc((sizeof(char*) * count_words + 1));
-    if (rez == NULL)
-        return NULL;
-    for (int i = 0; i < len; i++) {
-        buf = mx_get_char_index(s, c);
-        if (buf == -1)
-            buf = mx_strlen(s);
-        if (buf > 0) {
-            rez[count] = mx_strndup(s, buf);
-            s += mx_strlen(rez[count]) - 1;
-            i += mx_strlen(rez[count]) - 1;
-            count++;
+    count = mx_count_words(s, c);
+    arr = (char **) malloc((count+ 1) * sizeof(char *) );
+    arr = strsplit_dop(s, c, count, arr);
+    arr[count] = NULL;
+    return arr;
+}
+
+
+static char **strsplit_dop(const char *s, char c, int count, char **arr) {
+    char *str= (char *)s;
+    char *start = NULL;
+    char *end = NULL;
+
+    for (int a = 0; a < count && count_border(str, c,&start, &end); a++) {
+        int d = 0;
+
+        arr[a] = mx_strnew((size_t)(end - start + 1));
+        for (str = start; str != end; str++) {
+            arr[a][d] = *str;
+            d++;
         }
-        s++;
+        str = end + 1;
     }
-    rez[count_words] = NULL;
-    return rez;
+    return arr;
+}
+
+static bool count_border(char *s, char c, char **start, char **end) {
+    for (*start = s; **start == c; (*start)++)
+        if (**start =='\0')
+            return false;
+    for (*end = *start; **end != c && **end != '\0'; (*end)++)
+    ;
+    return true;
 }
 
 /*#include <stdio.h>

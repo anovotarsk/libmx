@@ -2,18 +2,18 @@
 
 void mx_del_strarr(char ***arr) {
     char **box = *arr;
+
     while(*box != NULL) {
-        printf("%s\n", *box);
         mx_strdel(box);
-        printf("%s\n", *box);
         box++;
     }
+    mx_strdel(box);
     free(*arr);
     *arr = NULL; 
 }
 
 /*int main() {
-    char **arr = (char**) malloc(100);
+    char **arr = (char**) malloc(4);
     arr[0] = mx_strnew(10);
     arr[1] = mx_strnew(10);
     arr[2] = mx_strnew(10);

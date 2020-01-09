@@ -8,6 +8,7 @@
 #include <fcntl.h>
 #include <stddef.h>
 #include <wchar.h>
+#include <malloc/malloc.h>
 
 typedef struct s_list {
     void *data;
@@ -85,5 +86,8 @@ int mx_strlen_null(const char *s);
 void mx_int(int n);
 void mx_sort(char **arr, int left, int right, int *swaps);
 void mx_go();
+
+int mx_def_start(const char *str, int sz);
+int mx_def_end(const char *str, int sz);
 
 #endif

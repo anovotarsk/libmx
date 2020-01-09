@@ -14,6 +14,8 @@ SRC = mx_binary_search.c \
 	mx_count_substr.c \
 	mx_count_words.c \
 	mx_create_node.c \
+	mx_def_end.c \
+	mx_def_start.c \
 	mx_del_extra_spaces.c \
 	mx_del_strarr.c \
 	mx_file_to_str.c \

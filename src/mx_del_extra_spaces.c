@@ -1,31 +1,45 @@
 #include "libmx.h"
 
-char *mx_del_extra_spaces(const char *str) {
-    char *trimmed_str = mx_strtrim(str);
-    int len = mx_strlen(trimmed_str);
-    char *rez_str_s = mx_strnew(len);
-    int j = 0;
-    for(int i = 0; i < len; i ++) {
-        if(trimmed_str[i] > 32 && trimmed_str[i] < 127) {
-            rez_str_s[j] = trimmed_str[i];
-            j ++;
+void writer(char *s, char **s1, int len) {
+    int i;
+    int j;
+
+    for (i = 0, j = 0; i <  mx_strlen(s) && j < len; i++) {
+        if (mx_if_space(s[i]) && !mx_if_space(s[i + 1])) {
+            s1[0][j] = ' ';
+            j++;
         }
-        else if((trimmed_str[i] == 32 && trimmed_str[i + 1] > 32 && trimmed_str[i] < 127 && rez_str_s[j - 1] != 32) ||
-        (trimmed_str[i] == 32 && trimmed_str[i - 1] > 32 && trimmed_str[i - 1] < 127)) {
-            rez_str_s[j] = trimmed_str[i];
-            j ++;
+        if (!mx_if_space(s[i])) {
+            s1[0][j] = s[i];
+            j++;
         }
-    } 
-    len = mx_strlen(rez_str_s);
-    char *rez_str_c = mx_strnew(len);
-    rez_str_c = rez_str_s;
-    free(rez_str_s);
-    return rez_str_c;
+    }
 }
 
-/*#include <stdio.h>
+char *mx_del_extra_spaces(const char *str) {
+    char *s = NULL;
+    char *s1 = NULL;
+    int i;
+    int len = 0;
+
+    if (str == NULL)
+        return NULL;
+    s = mx_strtrim(str);
+    for (i = 0; i < mx_strlen(s) - 1; i++)
+        if (mx_if_space(s[i]) && !mx_if_space(s[i + 1]))
+            len++;
+    for (i = 0; i < mx_strlen(s); i++)
+        if (!mx_if_space(s[i]))
+            len++;
+    s1 = (char*)malloc(len);
+    writer(s, &s1, len);
+    mx_strdel(&s);
+    return s1;
+}
+
+#include <stdio.h>
 int main() {
     //char *name = "\f My name...  is \r Neo \t\n ";
     //printf("%s", mx_del_extra_spaces(name));
     printf("%s\n", mx_del_extra_spaces("I   \n\n\n\n don't KNOW\n\n\nwhy\n\n\nusay \nGbye\n"));
-}*/
+}

@@ -1,24 +1,19 @@
 #include "libmx.h"
 
 char *mx_strstr(const char *haystack, const char *needle) {
-    if (haystack == NULL || needle == NULL || mx_strlen(needle) == 0)
+    int len_h = mx_strlen(haystack);
+    int len_n = mx_strlen(needle);
+    int e = mx_get_substr_index(haystack, needle);
+
+    if(len_n == 0)
+        return (char*)haystack;
+    if(len_h < len_n)
         return NULL;
-    int len1 = mx_strlen(haystack), len2 = mx_strlen(needle);
-    char *str = mx_strnew(len1);
-    for (int i = 0; i < len1; i++)
-        str[i] = haystack[i];
-    while (len1 > 0) {
-        bool flag = true;
-        for (int j = 0; j < len2 && flag; j++) {
-            if (str[j] != needle[j])
-                flag = false;
-        }
-        if (flag)
-            return str;
-        str++;
-        len1--;
+    else if(e == -1) {
+        exit(0);
     }
-    return NULL;
+    else 
+        return (char*)&haystack[e];
 }
 
 /*#include <stdio.h>

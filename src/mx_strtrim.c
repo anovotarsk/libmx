@@ -1,26 +1,24 @@
 #include "libmx.h"
 
 char *mx_strtrim(const char *str) {
-    if (str == NULL)
-        return NULL;
-    int len = mx_strlen(str);
-    int i;
-    for (i = 0; mx_if_space(str[i]) != false; i++);
-    for (; mx_if_space(str[len - 1]); len--);
-    char *s = mx_strnew(len - i);
-    if (s == NULL) {
-        free(s);
-        free(s);
+    char *u = NULL;
+
+    if (!str)
+        u = NULL;
+    else {
+        int sz = mx_strlen(str);
+        int start = mx_def_start(str, sz);
+        int end = mx_def_end(str, sz);
+
+        u = mx_strnew(end - start + 1);
+        for (int a = 0; a <= end - start; a++)
+            u[a] = str[a + start];
     }
-    for (int j = 0; i < len; i++) {
-        s[j] = str[i];
-        j++;
-    }
-    return s;
+    return u;
 }
 
-/*#include <stdio.h>
-int main() {
-    char *name = "\f My name... is Neo \t\n ";
-    printf("%s", mx_strtrim(name));
-}*/
+// #include <stdio.h>
+// int main() {
+//     char *name = "\f My name... is Neo \t\n ";
+//     printf("%s", mx_strtrim(name));
+// }

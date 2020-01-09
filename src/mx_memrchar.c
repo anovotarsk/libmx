@@ -4,7 +4,9 @@ void *mx_memrchr(const void *s, int c, size_t n) {
     char *str = (char*) s;
     char *str1 = (char*) s;
     bool flag = false;
-    for (size_t i = 0; i < n; i++) {
+    size_t i;
+
+    for (i = 0; i < n; i++) {
         if (*str == c) {
             str1 = str;
             flag = true;
